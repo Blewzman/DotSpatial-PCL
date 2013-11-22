@@ -34,7 +34,7 @@ using System.Linq;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents information about a GPS satellite in orbit above Earth.
     /// </summary>
@@ -129,7 +129,7 @@ namespace DotSpatial.Positioning
 
         #region Public Properties
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the unique identifier of the satellite.
@@ -147,7 +147,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the horizontal direction towards the satellite from the current location.
@@ -172,7 +172,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the vertical direction towards the satellite from the current
@@ -198,7 +198,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the strength of the satellite's radio signal as it is being
@@ -224,7 +224,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the date and time that the satellite's signal was detected.
@@ -249,7 +249,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns whether the satellite's signal is being used to calculate the current
@@ -275,7 +275,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns whether the satellite's signal is currently being detected.
@@ -292,7 +292,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the amount of time elapsed since the signal was last received.
@@ -309,7 +309,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns whether the satellite's signal has recently been received.
@@ -326,7 +326,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Indicates whether the satellite is providing additional corrective
@@ -352,7 +352,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the government project responsible for launching the satellite.
@@ -427,7 +427,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the atomic clock currently in service.
@@ -485,7 +485,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the launch block of the satellite.
@@ -543,7 +543,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the date the satellite was placed into orbit.
@@ -633,7 +633,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the date the satellite was placed into service.
@@ -754,7 +754,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the date the satellite was removed from service.
@@ -779,7 +779,7 @@ namespace DotSpatial.Positioning
             }
         }
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
         /// <summary>
         /// Returns the friendly name of the satellite.

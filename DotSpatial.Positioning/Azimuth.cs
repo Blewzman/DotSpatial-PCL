@@ -36,7 +36,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents an angular measurement around the horizon between 0° and
     /// 360°.
@@ -241,7 +241,11 @@ namespace DotSpatial.Positioning
                 culture = CultureInfo.CurrentCulture;
 
             // Try to see it as a cardinal direction
+            #if (Portable)
+            switch (value.Trim().ToUpper())
+            #else
             switch (value.Trim().ToUpper(CultureInfo.InvariantCulture))
+            #endif
             {
                 case "N":
                 case "NORTH":
@@ -350,13 +354,21 @@ namespace DotSpatial.Positioning
                         return;
                     case 1: // Decimal degrees
                         // Is it infinity?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Infinity, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Infinity, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Empty, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Empty, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = 0.0;
                             return;
@@ -2499,9 +2511,18 @@ Math.Round(
                 format = "G";
 
             // Convert to upper case
+            #if (Portable)
+            format = format.ToUpper();
+            #else
             format = format.ToUpper(culture);
+            #endif
+
             // Use a default format
+            #if (Portable)
+            if (String.Compare(format, "G", StringComparison.CurrentCulture) == 0)
+            #else
             if (String.Compare(format, "G", false, culture) == 0)
+            #endif
                 format = "CC";
 
             string subFormat;
@@ -2518,13 +2539,22 @@ Math.Round(
                 if (double.IsNaN(DecimalDegrees))
                     return "NaN";
                 // Use the default if "g" is passed
+
+#if (Portable)
+                format = format.ToLower();
+#else
                 format = format.ToLower(culture);
+#endif
                 if (format == "g")
                     format = "d.dddd°";
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
                     // Convert the format to uppercase
+#if (Portable)
+                    .ToUpper();
+#else
                     .ToUpper(culture);
+#endif
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
@@ -2601,7 +2631,11 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
+                #if (Portable)
+                if (String.Compare(format, "°", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "°", true, culture) == 0)
+                #endif
                     return "0°";
 
                 // Is there an hours specifier?

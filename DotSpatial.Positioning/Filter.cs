@@ -1,4 +1,5 @@
-﻿// ********************************************************************************************************
+﻿#if (!Portable)
+// ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
 // ********************************************************************************************************
@@ -128,3 +129,4 @@ namespace DotSpatial.Positioning
         public abstract Position3D Filter(Position3D gpsPosition, Distance deviceError, DilutionOfPrecision horizontalDOP, DilutionOfPrecision verticalDOP, Azimuth bearing, Speed speed);
     }
 }
+#endif

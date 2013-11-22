@@ -27,7 +27,7 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a measurement of the strength of a received radio signal.
     /// </summary>
@@ -99,7 +99,11 @@ namespace DotSpatial.Positioning
         public SignalToNoiseRatio(string value, CultureInfo culture)
         {
             // Remove the decibals "DB"
+            #if (Portable)
+            value = value.ToUpper().Replace(" DB", string.Empty).Trim();
+            #else
             value = value.ToUpper(culture).Replace(" DB", string.Empty).Trim();
+            #endif
 
             // If there's a rating in there, get rid of it
             if (value.IndexOf("(", StringComparison.OrdinalIgnoreCase) != -1)
@@ -312,7 +316,11 @@ namespace DotSpatial.Positioning
                 format = "0 dB (r)";
 
             // Convert the string to lower-case
+            #if (Portable)
+            format = format.ToUpper();
+            #else
             format = format.ToUpper(CultureInfo.InvariantCulture);
+            #endif
 
             // Replace "r" with the rating
             if (format.IndexOf("R", StringComparison.Ordinal) != -1)

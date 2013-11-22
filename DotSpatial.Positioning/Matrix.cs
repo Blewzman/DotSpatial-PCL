@@ -1,4 +1,5 @@
-﻿#if PocketPC
+﻿#if (!Portable)
+#if PocketPC
 
 using System;
 using System.Drawing;
@@ -574,4 +575,5 @@ namespace GeoFramework
     }
 }
 
+#endif
 #endif

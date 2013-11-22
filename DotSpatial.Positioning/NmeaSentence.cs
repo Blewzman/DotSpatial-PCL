@@ -168,7 +168,11 @@ namespace DotSpatial.Positioning
             *
             * ... the string is interned, which allows us to compare the word by reference.
             */
+            #if (Portable)
+            _commandWord = _sentence.Substring(dollarSignIndex, firstCommaIndex - dollarSignIndex);
+            #else
             _commandWord = string.Intern(_sentence.Substring(dollarSignIndex, firstCommaIndex - dollarSignIndex));
+            #endif
 
             // Next, get the index of the asterisk
             int asteriskIndex = _sentence.IndexOf("*", StringComparison.Ordinal);
@@ -364,7 +368,22 @@ namespace DotSpatial.Positioning
         /// <returns></returns>
         public override byte[] ToByteArray()
         {
+#if (Portable)
+            var ret = new byte[_sentence.Length];
+            for (var ix = 0; ix < _sentence.Length; ++ix)
+            {
+                var ch = _sentence[ix];
+                
+                if (ch <= 0x7f)
+                    ret[ix] = (byte)ch;
+                else 
+                    ret[ix] = (byte)'?';
+            }
+            
+            return ret;
+#else
             return Encoding.ASCII.GetBytes(_sentence);
+#endif
         }
 
         /// <summary>

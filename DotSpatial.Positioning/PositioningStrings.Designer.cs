@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace DotSpatial.Positioning {
     using System;
     
@@ -39,7 +41,12 @@ namespace DotSpatial.Positioning {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
+
+#if (Portable)
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DotSpatial.Positioning.PositioningStrings", typeof(PositioningStrings).GetTypeInfo().Assembly);
+#else
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DotSpatial.Positioning.PositioningStrings", typeof(PositioningStrings).Assembly);
+#endif
                     resourceMan = temp;
                 }
                 return resourceMan;

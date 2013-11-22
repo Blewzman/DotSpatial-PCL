@@ -78,7 +78,9 @@ namespace DotSpatial.Positioning
     /// calculated automatically.</para>
     ///   <para>Instances of this class are guaranteed to be thread-safe because they are
     /// immutable (properties can only be modified via constructors).</para></remarks>
+    #if (!Portable)
     [TypeConverter("DotSpatial.Positioning.Design.AngleConverter, DotSpatial.Positioning.Design, Culture=neutral, Version=1.0.0.0, PublicKeyToken=b4b0b185210c9dae")]
+    #endif
     public struct Angle : IFormattable, IComparable<Angle>, IEquatable<Angle>, ICloneable<Angle>, IXmlSerializable
     {
         /// <summary>
@@ -308,13 +310,21 @@ namespace DotSpatial.Positioning
                         return;
                     case 1: // Decimal degrees
                         // Is it infinity?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Infinity, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Infinity, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Empty, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Empty, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = 0.0;
                             return;
@@ -2037,7 +2047,11 @@ Math.Round(
                     format = "d.dddd°";
 
                 // Replace the "d" with "h" since degrees is the same as hours
+#if (Portable)
+                format = format.ToUpper().Replace("D", "H");
+#else
                 format = format.ToUpper(CultureInfo.InvariantCulture).Replace("D", "H");
+#endif
 
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator, StringComparison.Ordinal) !=
@@ -2116,7 +2130,11 @@ Math.Round(
                     }
                 }
                 // If nothing then return zero
+                #if (Portable)
+                if (String.Compare(format, "°", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "°", true, culture) == 0)
+                #endif
                     return "0°";
                 return format;
             }

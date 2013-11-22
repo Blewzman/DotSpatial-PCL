@@ -478,7 +478,11 @@ namespace DotSpatial.Positioning
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
                 reader.ReadStartElement();
 
+            #if (Portable)
+            switch (reader.LocalName.ToLower())
+            #else
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+            #endif
             {
                 case "pos":
                     // Read the "X Y" string, then split by the space between them
@@ -504,7 +508,11 @@ namespace DotSpatial.Positioning
                     // Now read up to 3 elements: X, and optionally Y or Z
                     for (int index = 0; index < 3; index++)
                     {
+#if (Portable)
+                        switch (reader.LocalName.ToLower())
+#else
                         switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+#endif
                         {
                             case "x":
                                 longitude = new Longitude(reader.ReadElementContentAsDouble());

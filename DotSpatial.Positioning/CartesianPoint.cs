@@ -30,7 +30,7 @@ using System.Xml.Serialization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents an Earth-centered, Earth-fixed (ECEF) Cartesian coordinate.
     /// </summary>
@@ -473,7 +473,11 @@ return
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
                 reader.ReadStartElement();
 
+            #if (Portable)
+            switch (reader.LocalName.ToLower())
+            #else
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+            #endif
             {
                 case "pos":
                     // Read the "X Y" string, then split by the space between them
@@ -496,7 +500,11 @@ return
                     // Now read up to 3 elements: X, and optionally Y or Z
                     for (int index = 0; index < 3; index++)
                     {
+#if (Portable)
+                        switch (reader.LocalName.ToLower())
+#else
                         switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+#endif
                         {
                             case "x":
                                 // Read X as meters (there's no unit type in the spec :P morons)

@@ -27,7 +27,7 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a number as a fraction of one hundred.
     /// </summary>

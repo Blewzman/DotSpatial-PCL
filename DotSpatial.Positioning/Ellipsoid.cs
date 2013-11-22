@@ -36,7 +36,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
 
     /// <summary>
     /// Represents a flattened sphere which approximates Earth's size and shape.

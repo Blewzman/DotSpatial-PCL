@@ -1,3 +1,4 @@
+#if (!Portable)
 // ********************************************************************************************************
 // Product Name: DotSpatial.Positioning.dll
 // Description:  A library for managing GPS connections.
@@ -1651,3 +1652,4 @@ namespace DotSpatial.Positioning
         #endregion IXmlSerializable Members
     }
 }
+#endif

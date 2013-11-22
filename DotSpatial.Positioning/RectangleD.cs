@@ -1,3 +1,4 @@
+#if (!Portable)
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -912,3 +913,4 @@ namespace GeoFramework
         #endregion
     }
 }
+#endif

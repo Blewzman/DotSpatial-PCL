@@ -35,7 +35,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a unit of angular measurement used during trigonometric
     /// equations.

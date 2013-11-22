@@ -33,7 +33,7 @@ using System.Linq;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
 
     /// <summary>
     /// Represents a coordinate system based on interpretations of the Earth's shape and size.

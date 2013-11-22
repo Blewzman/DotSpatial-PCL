@@ -37,7 +37,7 @@ using DotSpatial.Positioning.Properties;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a specific location on Earth's surface.
     /// </summary>
@@ -1772,7 +1772,9 @@ return
                 }
 
                 // Allow other threads some breathing room
+#if (!Portable)
                 Thread.Sleep(0);
+#endif
             }
 
             //u2 = cos(alpha).^2.*(a^2-b^2)/b^2;
@@ -2963,7 +2965,11 @@ return
                 && !reader.IsStartElement("coord", Xml.GML_XML_NAMESPACE))
                 reader.ReadStartElement();
 
+            #if (Portable)
+            switch (reader.LocalName.ToLower())
+            #else
             switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+            #endif
             {
                 case "pos":
                     // Read the "X Y" string, then split by the space between them
@@ -2995,7 +3001,11 @@ return
                          * test case-insensitive.
                          */
 
+#if (Portable)
+                        switch (reader.LocalName.ToLower())
+#else
                         switch (reader.LocalName.ToLower(CultureInfo.InvariantCulture))
+#endif
                         {
                             case "x":
                                 _longitude = new Longitude(reader.ReadElementContentAsDouble());

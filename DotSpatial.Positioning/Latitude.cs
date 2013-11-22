@@ -36,7 +36,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a line of constant distance north or south of the equator.
     /// </summary>
@@ -415,13 +415,21 @@ namespace DotSpatial.Positioning
                             return;
                         }
                         // Is it infinity?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Infinity, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Infinity, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = double.PositiveInfinity;
                             return;
                         }
                         // Is it empty?
+                        #if (Portable)
+                        if (String.Compare(values[0], Properties.Resources.Common_Empty, StringComparison.CurrentCultureIgnoreCase) == 0)
+                        #else
                         if (String.Compare(values[0], Properties.Resources.Common_Empty, true, culture) == 0)
+                        #endif
                         {
                             _decimalDegrees = 0.0;
                             return;
@@ -2236,16 +2244,28 @@ Math.Round(
                     return "NaN";
 
                 // Use the default if "g" is passed
+                #if (Portable)
+                format = format.ToLower();
+                #else
                 format = format.ToLower(culture);
+                #endif
 
                 // IF the format is "G", use the default format
+                #if (Portable)
+                if (String.Compare(format, "g", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "g", true, culture) == 0)
+                #endif
                     format = "HH°MM'SS.SSSS\"i";
 
                 // Replace the "d" with "h" since degrees is the same as hours
                 format = format.Replace("d", "h")
                     // Convert the format to uppercase
+#if (Portable)
+                    .ToUpper();
+#else
                     .ToUpper(culture);
+#endif
                 // Only one decimal is allowed
                 if (format.IndexOf(culture.NumberFormat.NumberDecimalSeparator) !=
                     format.LastIndexOf(culture.NumberFormat.NumberDecimalSeparator))
@@ -2345,7 +2365,11 @@ Math.Round(
                 }
 
                 // If nothing then return zero
+                #if (Portable)
+                if (String.Compare(format, "°", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "°", true, culture) == 0)
+                #endif
                     return "0°";
                 return format;
             }

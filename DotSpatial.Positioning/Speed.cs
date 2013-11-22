@@ -35,7 +35,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a measurement of an object's rate of travel.
     /// </summary>
@@ -281,7 +281,12 @@ namespace DotSpatial.Positioning
             try
             {
                 // Convert to uppercase and remove commas
+                #if (Portable)
+                value = value.ToUpper().Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #else
                 value = value.ToUpper(CultureInfo.InvariantCulture).Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #endif
+
                 if (value == "INFINITY")
                 {
                     _value = Infinity.Value;
@@ -307,7 +312,11 @@ namespace DotSpatial.Positioning
                 string numericPortion = value.Substring(0, count);
                 double.TryParse(numericPortion, out _value);
 
+                #if (Portable)
+                string tempUnits = unit.ToUpper().Trim()
+                #else
                 string tempUnits = unit.ToUpper(CultureInfo.InvariantCulture).Trim()
+                #endif
                     // Replace "per" synonyms
                     .Replace(" PER ", "/")
                     .Replace("-PER-", "/")
@@ -1348,10 +1357,18 @@ namespace DotSpatial.Positioning
             try
             {
                 // Convert the format to uppercase
+                #if (Portable)  
+                format = format.ToUpper();
+                #else
                 format = format.ToUpper(CultureInfo.InvariantCulture);
+                #endif
 
                 // Use the default if "g" is passed
+                #if (Portable)
+                if (String.Compare(format, "G", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "G", true, culture) == 0)
+                #endif
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 U";
 
                 // Replace "V" with zeroes

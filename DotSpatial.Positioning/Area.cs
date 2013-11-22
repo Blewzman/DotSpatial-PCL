@@ -35,7 +35,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents the measurement of surface area of a polygon on Earth's
     /// surface.
@@ -455,13 +455,22 @@ namespace DotSpatial.Positioning
             {
                 // Convert to uppercase and remove commas
                 value = value.Trim();
+                #if (Portable)
+                if (String.Compare(value, Properties.Resources.Common_Infinity, StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(value, Properties.Resources.Common_Infinity, true, culture) == 0)
+                #endif
                 {
                     _value = double.PositiveInfinity;
                     _units = AreaUnit.SquareNauticalMiles;
                     return;
                 }
+
+                #if (Portable)
+                if (String.Compare(value, Properties.Resources.Common_Empty, StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(value, Properties.Resources.Common_Empty, true, culture) == 0)
+                #endif
                 {
                     _value = 0;
                     _units = AreaUnit.SquareCentimeters;
@@ -469,7 +478,11 @@ namespace DotSpatial.Positioning
                 }
 
                 // Clean up the value
+                #if (Portable)
+                value = value.ToUpper().Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #else
                 value = value.ToUpper(culture).Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #endif
 
                 // Go until the first non-number character
                 int count = 0;
@@ -2051,13 +2064,21 @@ namespace DotSpatial.Positioning
             try
             {
                 // Use the default if "g" is passed
+                #if (Portable)
+                if (String.Compare(format, "g", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "g", true, CultureInfo.InvariantCulture) == 0)
+                #endif
                 {
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 uu";
                 }
 
                 // Convert the localized format string to a US format
+                #if (Portable)
+                format = format.Replace("v", "0").ToUpper();
+                #else
                 format = format.Replace("v", "0").ToUpper(CultureInfo.InvariantCulture);
+                #endif
                 // First, replace commas and dots with silly symbols
                 //				format = format.Replace(culture.NumberFormat.NumberDecimalSeparator, "#DECIMAL#");
                 //				format = format.Replace(culture.NumberFormat.NumberGroupSeparator, "#GROUP#");

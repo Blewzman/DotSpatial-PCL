@@ -35,7 +35,7 @@ using System.ComponentModel;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents the measurement of a straight line between between two points on
     /// Earth's surface.
@@ -367,7 +367,12 @@ namespace DotSpatial.Positioning
             try
             {
                 // Trim surrounding spaces and switch to uppercase
+                #if (Portable)
+                value = value.Trim().ToUpper().Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #else
                 value = value.Trim().ToUpper(CultureInfo.InvariantCulture).Replace(culture.NumberFormat.NumberGroupSeparator, string.Empty);
+                #endif
+
                 // Is it infinity?
                 if (value == "INFINITY")
                 {
@@ -2035,13 +2040,21 @@ namespace DotSpatial.Positioning
             try
             {
                 // Use the default if "g" is passed
+                #if (Portable)
+                if (String.Compare(format, "g", StringComparison.CurrentCultureIgnoreCase) == 0)
+                #else
                 if (String.Compare(format, "g", true, culture) == 0)
+                #endif
                 {
                     format = "#" + culture.NumberFormat.NumberGroupSeparator + "##0.00 uu";
                 }
 
                 // Convert the format to uppercase
+                #if (Portable)
+                format = format.ToUpper();
+                #else
                 format = format.ToUpper(CultureInfo.InvariantCulture);
+                #endif
 
                 // Convert the localized format string to a US format
                 format = format.Replace("V", "0");

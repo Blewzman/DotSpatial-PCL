@@ -27,7 +27,7 @@ using System.Globalization;
 
 namespace DotSpatial.Positioning
 {
-#if !PocketPC || DesignTime
+#if (!PocketPC && !Portable )|| DesignTime 
     /// <summary>
     /// Represents a confidence level in the precision of GPS data.
     /// </summary>

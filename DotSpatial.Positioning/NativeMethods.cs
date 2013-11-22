@@ -1,3 +1,4 @@
+#if (!Portable)
 #if PocketPC
 
 using System;
@@ -17,4 +18,5 @@ namespace GeoFramework
     }
 }
 
+#endif
 #endif

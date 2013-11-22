@@ -14,11 +14,12 @@
 // ********************************************************************************************************
 using System;
 using System.Reflection;
+//using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Security;
 
-#if !PocketPC && Framework20
+#if !PocketPC && Framework20  && !Portable
 
 using System.Runtime.ConstrainedExecution;
 
@@ -71,7 +72,7 @@ using System.Runtime.ConstrainedExecution;
 #endif
 
 /* Thisd assembly contains language-specific resources.  Help the CLR find them. */
-#if Framework20 && !PocketPC
+#if Framework20 && !PocketPC && (!Portable)
 [assembly: NeutralResourcesLanguageAttribute("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 #endif
 
@@ -100,7 +101,7 @@ using System.Runtime.ConstrainedExecution;
 #endif
 #endif
 
-#if !PocketPC
+#if !PocketPC && !Portable
 
 // On the desktop .NET Framework, we can certify that this code has been debugged well
 // enough to be reliable in all production environments.  Some crazy manufacturers will
